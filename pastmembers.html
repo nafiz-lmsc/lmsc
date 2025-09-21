@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMSC - Past Committees | The Laboratorians' Mathematics & Science Club</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Parallax Background */
+        .parallax-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .star {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .floating-object {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        .satellite {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            animation: satellite-orbit 30s infinite linear;
+        }
+
+        .rocket {
+            width: 40px;
+            height: 80px;
+            background: linear-gradient(180deg, #ff6b35, #f7931e);
+            clip-path: polygon(50% 0%, 80% 100%, 20% 100%);
+            animation: rocket-fly 25s infinite linear;
+        }
+
+        .gear {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #888, #555);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: gear-rotate 15s infinite linear;
+        }
+
+        @keyframes float {
+            from { transform: translateX(-100px) translateY(0px) rotate(0deg); }
+            to { transform: translateX(calc(100vw + 100px)) translateY(-50px) rotate(360deg); }
+        }
+
+        @keyframes satellite-orbit {
+            from { transform: translateX(-100px) rotate(0deg); }
+            to { transform: translateX(calc(100vw + 100px)) rotate(720deg); }
+        }
+
+        @keyframes rocket-fly {
+            from { transform: translateX(-100px) translateY(20px) rotate(-10deg); }
+            to { transform: translateX(calc(100vw + 100px)) translateY(-100px) rotate(10deg); }
+        }
+
+        @keyframes gear-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Main Content */
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(0, 32, 64, 0.9), rgba(0, 16, 32, 0.9));
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc, #ff6b35);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 4s ease infinite;
+        }
+
+        .header .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+        }
+
+        .header .description {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Committee Sections */
+        .committee-section {
+            padding: 60px 20px;
+            margin-bottom: 40px;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            margin: 40px 20px;
+        }
+
+        .committee-title {
+            text-align: center;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 40px;
+            background: linear-gradient(45deg, #00d4ff, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .committee-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(45deg, #00d4ff, #ff6b35);
+            border-radius: 2px;
+        }
+
+        /* Team Members Carousel */
+        .team-carousel {
+            position: relative;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        .team-track {
+            display: flex;
+            animation: scroll-left 20s infinite linear;
+            gap: 30px;
+            width: max-content;
+        }
+
+        .team-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .team-member {
+            flex: 0 0 300px;
+            background: linear-gradient(135deg, rgba(0, 50, 100, 0.3), rgba(0, 25, 50, 0.3));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            border-color: #00d4ff;
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .member-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            border: 3px solid rgba(0, 212, 255, 0.5);
+            background: linear-gradient(45deg, #333, #555);
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover .member-photo {
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .member-name {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: #00d4ff;
+        }
+
+        .member-role {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .member-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.4;
+        }
+
+        /* Navigation Dots */
+        .carousel-nav {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .nav-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 0 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: #00d4ff;
+            transform: scale(1.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .committee-section {
+                margin: 20px 10px;
+                padding: 40px 15px;
+            }
+
+            .team-member {
+                flex: 0 0 280px;
+                padding: 20px;
+            }
+
+            .member-photo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .header {
+                padding: 60px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .team-member {
+                flex: 0 0 250px;
+                padding: 15px;
+            }
+
+            .member-photo {
+                width: 80px;
+                height: 80px;
+            }
+
+            .member-name {
+                font-size: 1.1rem;
+            }
+
+            .member-role {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(0, 32, 64, 0.9), rgba(0, 16, 32, 0.9));
+            border-top: 2px solid rgba(0, 212, 255, 0.3);
+            margin-top: 60px;
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #00d4ff, #ff6b35);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #0099cc, #f7931e);
+        }
+    </style>
+</head>
+<body>
+    <!-- Parallax Background -->
+    <div class="parallax-container">
+        <div class="stars" id="stars"></div>
+        <div class="floating-object satellite" style="top: 20%; left: -100px; animation-delay: 0s;"></div>
+        <div class="floating-object rocket" style="top: 40%; left: -100px; animation-delay: 5s;"></div>
+        <div class="floating-object gear" style="top: 60%; left: -100px; animation-delay: 10s;"></div>
+        <div class="floating-object satellite" style="top: 80%; left: -100px; animation-delay: 15s;"></div>
+        <div class="floating-object rocket" style="top: 30%; left: -100px; animation-delay: 20s;"></div>
+        <div class="floating-object gear" style="top: 70%; left: -100px; animation-delay: 25s;"></div>
+    </div>
+
+    <div class="content">
+        <!-- Header -->
+        <header class="header">
+            <h1>LMSC Past Committees</h1>
+            <p class="subtitle">The Laboratorians' Mathematics & Science Club</p>
+            <p class="description">
+                Celebrating the brilliant minds who have shaped our journey in aerospace engineering, robotics, 
+                mathematics, and scientific innovation. Each committee has contributed to our legacy of excellence 
+                and discovery.
+            </p>
+        </header>
+
+        <!-- 2023-2024 Committee -->
+        <section class="committee-section">
+            <h2 class="committee-title">2023-2024 Committee (NOT ENOUGH DETAILS)</h2>
+            <div class="team-carousel">
+                <div class="team-track" id="track2023">
+                    <div class="team-member">
+                        <img src="" alt="President" class="member-photo">
+                        <h3 class="member-name">President Name</h3>
+                        <p class="member-role">President</p>
+                        <p class="member-description">Led breakthrough research in satellite technology and space exploration.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Vice President" class="member-photo">
+                        <h3 class="member-name">Vice President Name</h3>
+                        <p class="member-role">Vice President</p>
+                        <p class="member-description">Pioneered robotics competitions and automation projects.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Secretary" class="member-photo">
+                        <h3 class="member-name">Secretary Name</h3>
+                        <p class="member-role">Secretary</p>
+                        <p class="member-description">Coordinated international science symposiums and conferences.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Treasurer" class="member-photo">
+                        <h3 class="member-name">Treasurer Name</h3>
+                        <p class="member-role">Treasurer</p>
+                        <p class="member-description">Secured funding for advanced laboratory equipment and space missions.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Research Head" class="member-photo">
+                        <h3 class="member-name">Research Head Name</h3>
+                        <p class="member-role">Research Head</p>
+                        <p class="member-description">Supervised groundbreaking research in astrophysics and materials science.</p>
+                    </div>
+                    <!-- Duplicate for seamless loop -->
+                    <div class="team-member">
+                        <img src="" alt="President" class="member-photo">
+                        <h3 class="member-name">President Name</h3>
+                        <p class="member-role">President</p>
+                        <p class="member-description">Led breakthrough research in satellite technology and space exploration.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Vice President" class="member-photo">
+                        <h3 class="member-name">Vice President Name</h3>
+                        <p class="member-role">Vice President</p>
+                        <p class="member-description">Pioneered robotics competitions and automation projects.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Secretary" class="member-photo">
+                        <h3 class="member-name">Secretary Name</h3>
+                        <p class="member-role">Secretary</p>
+                        <p class="member-description">Coordinated international science symposiums and conferences.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2022-2023 Committee -->
+        <section class="committee-section">
+            <h2 class="committee-title">2022-2023 Committee(NOT ENOUGH DETAILS)</h2>
+            <div class="team-carousel">
+                <div class="team-track" id="track2022">
+                    <div class="team-member">
+                        <img src="" alt="President" class="member-photo">
+                        <h3 class="member-name">President Name</h3>
+                        <p class="member-role">President</p>
+                        <p class="member-description">Established the aerospace engineering division and launched first rocket project.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Vice President" class="member-photo">
+                        <h3 class="member-name">Vice President Name</h3>
+                        <p class="member-role">Vice President</p>
+                        <p class="member-description">Developed AI-powered robotics systems for space exploration missions.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Secretary" class="member-photo">
+                        <h3 class="member-name">Secretary Name</h3>
+                        <p class="member-role">Secretary</p>
+                        <p class="member-description">Created comprehensive documentation systems for all club projects.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Treasurer" class="member-photo">
+                        <h3 class="member-name">Treasurer Name</h3>
+                        <p class="member-role">Treasurer</p>
+                        <p class="member-description">Managed budget for multiple aerospace and robotics initiatives.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Project Manager" class="member-photo">
+                        <h3 class="member-name">Project Manager Name</h3>
+                        <p class="member-role">Project Manager</p>
+                        <p class="member-description">Orchestrated collaboration between mathematics and engineering teams.</p>
+                    </div>
+                    <!-- Duplicate for seamless loop -->
+                    <div class="team-member">
+                        <img src="" alt="President" class="member-photo">
+                        <h3 class="member-name">President Name</h3>
+                        <p class="member-role">President</p>
+                        <p class="member-description">Established the aerospace engineering division and launched first rocket project.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Vice President" class="member-photo">
+                        <h3 class="member-name">Vice President Name</h3>
+                        <p class="member-role">Vice President</p>
+                        <p class="member-description">Developed AI-powered robotics systems for space exploration missions.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Secretary" class="member-photo">
+                        <h3 class="member-name">Secretary Name</h3>
+                        <p class="member-role">Secretary</p>
+                        <p class="member-description">Created comprehensive documentation systems for all club projects.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2021-2022 Committee -->
+        <section class="committee-section">
+            <h2 class="committee-title">2021-2022 Committee(NOT ENOUGH DETAILS)</h2>
+            <div class="team-carousel">
+                <div class="team-track" id="track2021">
+                    <div class="team-member">
+                        <img src="" alt="Founder President" class="member-photo">
+                        <h3 class="member-name">Founder President Name</h3>
+                        <p class="member-role">Founder & President</p>
+                        <p class="member-description">Visionary founder who established LMSC with a dream of space exploration and robotics innovation.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Co-Founder" class="member-photo">
+                        <h3 class="member-name">Co-Founder Name</h3>
+                        <p class="member-role">Co-Founder & Vice President</p>
+                        <p class="member-description">Co-founded the club and laid the foundation for our mathematics and science programs.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Secretary" class="member-photo">
+                        <h3 class="member-name">Secretary Name</h3>
+                        <p class="member-role">Founding Secretary</p>
+                        <p class="member-description">Organized the first club meetings and established our core organizational structure.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Treasurer" class="member-photo">
+                        <h3 class="member-name">Treasurer Name</h3>
+                        <p class="member-role">Founding Treasurer</p>
+                        <p class="member-description">Set up initial funding strategies and financial frameworks for the club.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Technical Advisor" class="member-photo">
+                        <h3 class="member-name">Technical Advisor Name</h3>
+                        <p class="member-role">Technical Advisor</p>
+                        <p class="member-description">Provided technical guidance for our first robotics and aerospace projects.</p>
+                    </div>
+                    <!-- Duplicate for seamless loop -->
+                    <div class="team-member">
+                        <img src="" alt="Founder President" class="member-photo">
+                        <h3 class="member-name">Founder President Name</h3>
+                        <p class="member-role">Founder & President</p>
+                        <p class="member-description">Visionary founder who established LMSC with a dream of space exploration and robotics innovation.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="" alt="Co-Founder" class="member-photo">
+                        <h3 class="member-name">Co-Founder Name</h3>
+                        <p class="member-role">Co-Founder & Vice President</p>
+                        <p class="member-description">Co-founded the club and laid the foundation for our mathematics and science programs.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="1.png" alt="Secretary" class="member-photo">
+                        <h3 class="member-name">Secretary Name</h3>
+                        <p class="member-role">Founding Secretary</p>
+                        <p class="member-description">Organized the first club meetings and established our core organizational structure.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 LMSC - The Laboratorians' Mathematics & Science Club. Reaching for the stars, building the future. Developer - Tasnim Ahmed Nafiz</p>
+        </footer>
+    </div>
+
+    <script>
+        // Generate random stars
+        function generateStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 200;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Touch and mouse interaction for carousels
+        function addCarouselInteraction() {
+            const tracks = document.querySelectorAll('.team-track');
+            
+            tracks.forEach(track => {
+                let isDown = false;
+                let startX;
+                let scrollLeft;
+                let currentTransform = 0;
+                let animationSpeed = 0.5; // pixels per frame
+                let animationId;
+                
+                // Start continuous animation
+                function startAnimation() {
+                    function animate() {
+                        if (!isDown) {
+                            currentTransform -= animationSpeed;
+                            // Reset when we've scrolled through half the content
+                            if (Math.abs(currentTransform) >= track.scrollWidth / 2) {
+                                currentTransform = 0;
+                            }
+                            track.style.transform = `translateX(${currentTransform}px)`;
+                        }
+                        animationId = requestAnimationFrame(animate);
+                    }
+                    animate();
+                }
+                
+                // Initialize animation
+                track.style.animation = 'none'; // Remove CSS animation
+                startAnimation();
+
+                track.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    track.style.cursor = 'grabbing';
+                    startX = e.pageX - track.offsetLeft;
+                    scrollLeft = currentTransform;
+                });
+
+                track.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    track.style.cursor = 'grab';
+                });
+
+                track.addEventListener('mouseup', () => {
+                    isDown = false;
+                    track.style.cursor = 'grab';
+                });
+
+                track.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - track.offsetLeft;
+                    const walk = (x - startX) * 1.5;
+                    currentTransform = scrollLeft + walk;
+                    track.style.transform = `translateX(${currentTransform}px)`;
+                });
+
+                // Touch events
+                track.addEventListener('touchstart', (e) => {
+                    isDown = true;
+                    startX = e.touches[0].pageX - track.offsetLeft;
+                    scrollLeft = currentTransform;
+                }, { passive: true });
+
+                track.addEventListener('touchend', () => {
+                    isDown = false;
+                }, { passive: true });
+
+                track.addEventListener('touchmove', (e) => {
+                    if (!isDown) return;
+                    const x = e.touches[0].pageX - track.offsetLeft;
+                    const walk = (x - startX) * 1.5;
+                    currentTransform = scrollLeft + walk;
+                    track.style.transform = `translateX(${currentTransform}px)`;
+                }, { passive: true });
+
+                // Set cursor style
+                track.addEventListener('mouseenter', () => {
+                    track.style.cursor = 'grab';
+                });
+
+                track.addEventListener('mouseleave', () => {
+                    if (!isDown) {
+                        track.style.cursor = 'default';
+                    }
+                });
+            });
+        }
+
+        // Parallax scrolling effect
+        function parallaxEffect() {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const parallax = document.querySelector('.parallax-container');
+                const speed = scrolled * 0.5;
+                parallax.style.transform = `translateY(${speed}px)`;
+            });
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            generateStars();
+            addCarouselInteraction();
+            parallaxEffect();
+        });
+
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
