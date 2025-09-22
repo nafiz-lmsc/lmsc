@@ -466,6 +466,12 @@
         ::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(135deg, #5b52f0, #8b46f7);
         }
+
+        /* Validation error styling */
+        .validation-error {
+            border-color: #fbbf24 !important;
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.5) !important;
+        }
     </style>
 </head>
 <body>
@@ -482,7 +488,7 @@
                     <p>Thank you for registering! Your application has been sent to the organizers and you will receive a confirmation email shortly.</p>
                 </div>
 
-                <form action="https://api.web3forms.com/submit" id="form" method="POST">
+                <form action="https://api.web3forms.com/submit" id="Form" method="POST">
                     <input type="hidden" name="access_key" value="ae02ea99-49cf-4efa-b89c-33fc056a4ad3">
                     <!-- Personal Information -->
                     <div class="form-section">
@@ -522,19 +528,20 @@
                     <!-- Olympiad Selection -->
                     <div class="form-section" id="olympiadSection" style="display: none;">
                         <h2 class="section-title">Select Olympiads <span class="required">*</span></h2>
-                        <p style="margin-bottom: 20px; color: rgba(255,255,255,0.8);">You must select at least one olympiad to participate.</p>
+                        <p style="margin-bottom: 20px; color: rgba(255,255,255,0.8);"><strong>MANDATORY:</strong> You must select at least one olympiad to participate in the Science Fest.</p>
                         <div class="checkbox-group" id="olympiadOptions"></div>
                         <div class="error" id="olympiadError"></div>
                         
                         <!-- Payment section for olympiads -->
                         <div id="olympiadPaymentSection" class="hidden" style="margin-top: 30px;">
                             <div class="payment-info">
-                                <strong>💳 Payment Required:</strong> 20 TK via bKash/Nagad to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND , THE REGISTRATION WILL BE CANCELLED ! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
+                                <strong>💳 Payment Required:</strong> 20 TK via bKash/Nagad to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
                             </div>
                             
                             <div class="form-group">
                                 <label for="olympiadTransaction">Transaction ID <span class="required">*</span></label>
-                                <input type="text" id="olympiadTransaction" name="olympiad_transaction_id" placeholder="Enter transaction ID">
+                                <input type="text" id="olympiadTransaction" name="olympiad_transaction_id" placeholder="Enter transaction ID (REQUIRED FOR OLYMPIAD PARTICIPATION)" required>
+                                <div class="error" id="olympiadTransactionError"></div>
                             </div>
                         </div>
                         
@@ -555,6 +562,14 @@
                                 <input type="checkbox" id="chess" name="solo_participation" value="Chess Tournament">
                                 <label for="chess">Chess Tournament</label>
                             </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="scientificPainting" name="solo_participation" value="Scientific Painting">
+                                <label for="scientificPainting">Scientific Painting</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="problemSolving" name="solo_participation" value="Problem Solving">
+                                <label for="problemSolving">Problem Solving</label>
+                            </div>
                         </div>
                     </div>
 
@@ -572,12 +587,13 @@
                             
                             <div id="wallMagazineDetails" class="hidden">
                                 <div class="payment-info">
-                                    <strong>💳 Payment Required:</strong> 100 TK via bKash/Nagad to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND , THE REGISTRATION WILL BE CANCELLED ! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
+                                    <strong>💳 Payment Required:</strong> 100 TK via Bkash to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="wallMagazineTransaction">Transaction ID <span class="required">*</span></label>
-                                    <input type="text" id="wallMagazineTransaction" name="wall_magazine_transaction_id" placeholder="Enter transaction ID">
+                                    <input type="text" id="wallMagazineTransaction" name="wall_magazine_transaction_id" placeholder="Enter transaction ID (REQUIRED FOR WALL MAGAZINE)">
+                                    <div class="error" id="wallMagazineTransactionError"></div>
                                 </div>
                                 
                                 <div class="team-members">
@@ -597,12 +613,13 @@
                             
                             <div id="projectShowcaseDetails" class="hidden">
                                 <div class="payment-info">
-                                    <strong>💳 Payment Required:</strong> 200 TK via bKash/Nagad to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND , THE REGISTRATION WILL BE CANCELLED ! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
+                                    <strong>💳 Payment Required:</strong> 200 TK via bKash/Nagad to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label for="projectShowcaseTransaction">Transaction ID <span class="required">*</span></label>
-                                    <input type="text" id="projectShowcaseTransaction" name="project_showcase_transaction_id" placeholder="Enter transaction ID">
+                                    <input type="text" id="projectShowcaseTransaction" name="project_showcase_transaction_id" placeholder="Enter transaction ID (REQUIRED FOR PROJECT SHOWCASE)">
+                                    <div class="error" id="projectShowcaseTransactionError"></div>
                                 </div>
                                 
                                 <div class="team-members">
@@ -627,7 +644,7 @@
         const olympiadsByCategory = {
             primary: ['Mathematics', 'Science'],
             junior: ['Mathematics', 'Science'],
-            secondary: ['Mathematics', 'Physics', 'Chemistry', 'Biology']
+            secondary: ['Mathematics', 'Physics', 'Chemistry', 'Biology', 'Astronomy']
         };
 
         document.getElementById('category').addEventListener('change', function() {
@@ -660,6 +677,7 @@
                 // Add event listeners for olympiad checkboxes
                 const olympiadCheckboxes = document.querySelectorAll('input[name="olympiads"]');
                 const paymentSection = document.getElementById('olympiadPaymentSection');
+                const olympiadTransaction = document.getElementById('olympiadTransaction');
                 
                 olympiadCheckboxes.forEach(checkbox => {
                     checkbox.addEventListener('change', function() {
@@ -667,10 +685,12 @@
                         if (anyChecked) {
                             paymentSection.classList.remove('hidden');
                             paymentSection.classList.add('fade-in');
+                            olympiadTransaction.setAttribute('required', 'required');
                         } else {
                             paymentSection.classList.add('hidden');
                             paymentSection.classList.remove('fade-in');
-                            document.getElementById('olympiadTransaction').value = '';
+                            olympiadTransaction.removeAttribute('required');
+                            olympiadTransaction.value = '';
                         }
                     });
                 });
@@ -684,12 +704,15 @@
         // Team participation handlers
         document.getElementById('wallMagazine').addEventListener('change', function() {
             const details = document.getElementById('wallMagazineDetails');
+            const transactionInput = document.getElementById('wallMagazineTransaction');
             if (this.checked) {
                 details.classList.remove('hidden');
                 details.classList.add('fade-in');
+                transactionInput.setAttribute('required', 'required');
             } else {
                 details.classList.add('hidden');
                 details.classList.remove('fade-in');
+                transactionInput.removeAttribute('required');
                 // Clear form fields
                 details.querySelectorAll('input').forEach(input => input.value = '');
             }
@@ -697,62 +720,65 @@
 
         document.getElementById('projectShowcase').addEventListener('change', function() {
             const details = document.getElementById('projectShowcaseDetails');
+            const transactionInput = document.getElementById('projectShowcaseTransaction');
             if (this.checked) {
                 details.classList.remove('hidden');
                 details.classList.add('fade-in');
+                transactionInput.setAttribute('required', 'required');
             } else {
                 details.classList.add('hidden');
                 details.classList.remove('fade-in');
+                transactionInput.removeAttribute('required');
                 // Clear form fields
                 details.querySelectorAll('input').forEach(input => input.value = '');
             }
         });
 
-        // Form submission
+        // Form submission with enhanced validation
         document.getElementById('registrationForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Clear previous error states
+            document.querySelectorAll('.validation-error').forEach(el => el.classList.remove('validation-error'));
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
             
             // Show loading state
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Submitting... <span class="loading"></span>';
             
             // Validate required fields
             const requiredFields = ['name', 'institution', 'mobile', 'email', 'category'];
             let isValid = true;
+            let errorMessage = '';
             
             requiredFields.forEach(field => {
                 const input = document.getElementById(field);
                 if (!input.value.trim()) {
                     isValid = false;
-                    input.style.borderColor = '#fbbf24';
-                    input.style.boxShadow = '0 0 15px rgba(251, 191, 36, 0.5)';
-                } else {
-                    input.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                    input.style.boxShadow = 'none';
+                    input.classList.add('validation-error');
+                    errorMessage += `• ${input.previousElementSibling.textContent.replace(' *', '')} is required\n`;
                 }
             });
 
-            // Validate olympiad selection and payments
+            // Validate olympiad selection and REQUIRED payment
             const olympiadCheckboxes = document.querySelectorAll('input[name="olympiads"]:checked');
             const olympiadError = document.getElementById('olympiadError');
+            const olympiadTransactionError = document.getElementById('olympiadTransactionError');
             
-            if (document.getElementById('category').value && olympiadCheckboxes.length === 0) {
+            // MANDATORY: At least one olympiad must be selected
+            if (olympiadCheckboxes.length === 0) {
                 isValid = false;
-                olympiadError.textContent = 'Please select at least one olympiad to participate.';
-            } else {
-                olympiadError.textContent = '';
-                
-                // Validate transaction ID for olympiad participation
-                if (olympiadCheckboxes.length > 0) {
-                    const transactionInput = document.getElementById('olympiadTransaction');
-                    if (!transactionInput.value.trim()) {
-                        isValid = false;
-                        transactionInput.style.borderColor = '#fbbf24';
-                        transactionInput.style.boxShadow = '0 0 15px rgba(251, 191, 36, 0.5)';
-                    } else {
-                        transactionInput.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                        transactionInput.style.boxShadow = 'none';
-                    }
+                olympiadError.textContent = 'REQUIRED: You must select at least one olympiad to participate in the Science Fest.';
+                errorMessage += '• At least one olympiad is MANDATORY for participation\n';
+            } else if (olympiadCheckboxes.length > 0) {
+                // CRITICAL: Validate transaction ID for olympiad participation
+                const transactionInput = document.getElementById('olympiadTransaction');
+                if (!transactionInput.value.trim()) {
+                    isValid = false;
+                    transactionInput.classList.add('validation-error');
+                    olympiadTransactionError.textContent = 'Transaction ID is required for olympiad participation';
+                    errorMessage += '• Transaction ID is required for olympiad participation\n';
                 }
                 
                 // Update hidden field with selected olympiads
@@ -760,28 +786,46 @@
                 document.getElementById('olympiadSelections').value = selectedOlympiads.join(', ');
             }
 
-            // Validate team participation payment details
+            // Validate team participation REQUIRED payments
             const wallMagazineChecked = document.getElementById('wallMagazine').checked;
             const projectShowcaseChecked = document.getElementById('projectShowcase').checked;
+            const wallMagazineTransactionError = document.getElementById('wallMagazineTransactionError');
+            const projectShowcaseTransactionError = document.getElementById('projectShowcaseTransactionError');
 
-            if (wallMagazineChecked && !document.getElementById('wallMagazineTransaction').value) {
-                isValid = false;
+            if (wallMagazineChecked) {
                 const transactionInput = document.getElementById('wallMagazineTransaction');
-                transactionInput.style.borderColor = '#fbbf24';
-                transactionInput.style.boxShadow = '0 0 15px rgba(251, 191, 36, 0.5)';
+                if (!transactionInput.value.trim()) {
+                    isValid = false;
+                    transactionInput.classList.add('validation-error');
+                    wallMagazineTransactionError.textContent = 'Transaction ID is required for Wall Magazine participation';
+                    errorMessage += '• Transaction ID is required for Wall Magazine participation\n';
+                }
             }
 
-            if (projectShowcaseChecked && !document.getElementById('projectShowcaseTransaction').value) {
-                isValid = false;
+            if (projectShowcaseChecked) {
                 const transactionInput = document.getElementById('projectShowcaseTransaction');
-                transactionInput.style.borderColor = '#fbbf24';
-                transactionInput.style.boxShadow = '0 0 15px rgba(251, 191, 36, 0.5)';
+                if (!transactionInput.value.trim()) {
+                    isValid = false;
+                    transactionInput.classList.add('validation-error');
+                    projectShowcaseTransactionError.textContent = 'Transaction ID is required for Project Showcase participation';
+                    errorMessage += '• Transaction ID is required for Project Showcase participation\n';
+                }
             }
 
             if (!isValid) {
                 // Reset button state
                 submitBtn.disabled = false;
-                alert('⚠️ Please fill in all required fields and transaction IDs for selected events before submitting.');
+                submitBtn.innerHTML = 'Submit Registration';
+                
+                // Show detailed error message
+                alert('❌ SUBMISSION FAILED - Missing Required Information:\n\n' + errorMessage + '\n⚠️ ALL TRANSACTION IDs ARE MANDATORY FOR SELECTED EVENTS!\n\nPlease fill in all required fields and transaction IDs before submitting.');
+                
+                // Scroll to first error
+                const firstError = document.querySelector('.validation-error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstError.focus();
+                }
                 return;
             }
 
@@ -890,11 +934,30 @@
             .finally(() => {
                 // Reset button state
                 submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Submit Registration';
             });
         });
 
         // Add smooth scroll behavior
         document.documentElement.style.scrollBehavior = 'smooth';
+
+        // Real-time validation feedback
+        function addRealTimeValidation(inputId, errorId) {
+            const input = document.getElementById(inputId);
+            const errorDiv = document.getElementById(errorId);
+            
+            input.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    this.classList.remove('validation-error');
+                    if (errorDiv) errorDiv.textContent = '';
+                }
+            });
+        }
+
+        // Add real-time validation for transaction fields
+        addRealTimeValidation('olympiadTransaction', 'olympiadTransactionError');
+        addRealTimeValidation('wallMagazineTransaction', 'wallMagazineTransactionError');
+        addRealTimeValidation('projectShowcaseTransaction', 'projectShowcaseTransactionError');
     </script>
 </body>
 </html>
