@@ -168,7 +168,8 @@
             color: white;
         }
 
-        input::placeholder {
+        input::placeholder,
+        textarea::placeholder {
             color: rgba(255, 255, 255, 0.7);
         }
 
@@ -185,6 +186,12 @@
         select option {
             background: rgba(79, 70, 229, 0.9);
             color: white;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
         }
 
         .checkbox-group {
@@ -430,19 +437,19 @@
             .header h1 {
                 font-size: 2.2rem;
             }
-            
+
             .form-container {
                 padding: 30px 20px;
             }
-            
+
             .form-section {
                 padding: 20px;
             }
-            
+
             .checkbox-group {
                 grid-template-columns: 1fr;
             }
-            
+
             .team-members {
                 grid-template-columns: 1fr;
             }
@@ -493,7 +500,7 @@
                     <!-- Personal Information -->
                     <div class="form-section">
                         <h2 class="section-title">Personal Information</h2>
-                        
+
                         <div class="form-group">
                             <label for="name">Full Name <span class="required">*</span></label>
                             <input type="text" id="name" name="name" required placeholder="Enter your full name">
@@ -531,20 +538,20 @@
                         <p style="margin-bottom: 20px; color: rgba(255,255,255,0.8);"><strong>MANDATORY:</strong> You must select at least one olympiad to participate in the Science Fest.</p>
                         <div class="checkbox-group" id="olympiadOptions"></div>
                         <div class="error" id="olympiadError"></div>
-                        
+
                         <!-- Payment section for olympiads -->
                         <div id="olympiadPaymentSection" class="hidden" style="margin-top: 30px;">
                             <div class="payment-info">
-                                <strong>💳 Payment Required:</strong> 20 TK via BKash/Nagad to <strong>01759189875</strong> IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]
+                                <strong>💳 Payment Required:</strong> 20 TK via bKash/Nagad to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="olympiadTransaction">Transaction ID <span class="required">*</span></label>
                                 <input type="text" id="olympiadTransaction" name="olympiad_transaction_id" placeholder="Enter transaction ID (REQUIRED FOR OLYMPIAD PARTICIPATION)" required>
                                 <div class="error" id="olympiadTransactionError"></div>
                             </div>
                         </div>
-                        
+
                         <!-- Hidden field for olympiad selections -->
                         <input type="hidden" id="olympiadSelections" name="olympiad_selections" value="">
                     </div>
@@ -577,27 +584,32 @@
                     <div class="form-section" id="teamSection" style="display: none;">
                         <h2 class="section-title">Team Participation (Optional)</h2>
                         <p style="margin-bottom: 25px; color: rgba(255,255,255,0.8);">Join team competitions and showcase your collaborative skills.</p>
-                        
+
                         <!-- Wall Magazine -->
                         <div class="team-participation">
                             <div class="checkbox-item" style="margin-bottom: 20px;">
                                 <input type="checkbox" id="wallMagazine" name="team_participation" value="Wall Magazine Competition (3 Members)">
                                 <label for="wallMagazine"><strong>Wall Magazine Competition (3 Members)</strong></label>
                             </div>
-                            
+
                             <div id="wallMagazineDetails" class="hidden">
                                 <div class="payment-info">
-                                    <strong>💳 Payment Required:</strong> 150 TK via Bkash/Nagad to <strong>01759189875</strong> IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]
+                                    <strong>💳 Payment Required:</strong> 100 TK via Bkash to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
                                 </div>
-                                
+
+                                <div class="form-group">
+                                    <label for="wallMagazineTeamName">Team Name <span class="required">*</span></label>
+                                    <input type="text" id="wallMagazineTeamName" name="wall_magazine_team_name" placeholder="Enter your team name">
+                                </div>
+
                                 <div class="form-group">
                                     <label for="wallMagazineTransaction">Transaction ID <span class="required">*</span></label>
                                     <input type="text" id="wallMagazineTransaction" name="wall_magazine_transaction_id" placeholder="Enter transaction ID (REQUIRED FOR WALL MAGAZINE)">
                                     <div class="error" id="wallMagazineTransactionError"></div>
                                 </div>
-                                
+
                                 <div class="team-members">
-                                    <input type="text" name="wall_magazine_member_1" placeholder="Team Member 1 Name">
+                                    <input type="text" name="wall_magazine_member_1" placeholder="Team Leader Name">
                                     <input type="text" name="wall_magazine_member_2" placeholder="Team Member 2 Name">
                                     <input type="text" name="wall_magazine_member_3" placeholder="Team Member 3 Name">
                                 </div>
@@ -610,20 +622,35 @@
                                 <input type="checkbox" id="projectShowcase" name="team_participation" value="Project Showcase (4 Members)">
                                 <label for="projectShowcase"><strong>Project Showcase (4 Members)</strong></label>
                             </div>
-                            
+
                             <div id="projectShowcaseDetails" class="hidden">
                                 <div class="payment-info">
-                                    <strong>💳 Payment Required:</strong> 300 TK via BKash/Nagad to <strong>01759189875</strong> IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]
+                                    <strong>💳 Payment Required:</strong> 200 TK via bKash/Nagad to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
                                 </div>
-                                
+
+                                <div class="form-group">
+                                    <label for="projectShowcaseTeamName">Team Name <span class="required">*</span></label>
+                                    <input type="text" id="projectShowcaseTeamName" name="project_showcase_team_name" placeholder="Enter your team name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="projectTitle">Project Title <span class="required">*</span></label>
+                                    <input type="text" id="projectTitle" name="project_title" placeholder="Enter your project title">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="projectBrief">Project Brief Description <span class="required">*</span></label>
+                                    <textarea id="projectBrief" name="project_brief" placeholder="Write a brief description of your project..." rows="4"></textarea>
+                                </div>
+
                                 <div class="form-group">
                                     <label for="projectShowcaseTransaction">Transaction ID <span class="required">*</span></label>
                                     <input type="text" id="projectShowcaseTransaction" name="project_showcase_transaction_id" placeholder="Enter transaction ID (REQUIRED FOR PROJECT SHOWCASE)">
                                     <div class="error" id="projectShowcaseTransactionError"></div>
                                 </div>
-                                
+
                                 <div class="team-members">
-                                    <input type="text" name="project_showcase_member_1" placeholder="Team Member 1 Name">
+                                    <input type="text" name="project_showcase_member_1" placeholder="Team Leader Name">
                                     <input type="text" name="project_showcase_member_2" placeholder="Team Member 2 Name">
                                     <input type="text" name="project_showcase_member_3" placeholder="Team Member 3 Name">
                                     <input type="text" name="project_showcase_member_4" placeholder="Team Member 4 Name">
@@ -678,7 +705,7 @@
                 const olympiadCheckboxes = document.querySelectorAll('input[name="olympiads"]');
                 const paymentSection = document.getElementById('olympiadPaymentSection');
                 const olympiadTransaction = document.getElementById('olympiadTransaction');
-                
+
                 olympiadCheckboxes.forEach(checkbox => {
                     checkbox.addEventListener('change', function() {
                         const anyChecked = document.querySelectorAll('input[name="olympiads"]:checked').length > 0;
@@ -705,14 +732,17 @@
         document.getElementById('wallMagazine').addEventListener('change', function() {
             const details = document.getElementById('wallMagazineDetails');
             const transactionInput = document.getElementById('wallMagazineTransaction');
+            const teamNameInput = document.getElementById('wallMagazineTeamName');
             if (this.checked) {
                 details.classList.remove('hidden');
                 details.classList.add('fade-in');
                 transactionInput.setAttribute('required', 'required');
+                teamNameInput.setAttribute('required', 'required');
             } else {
                 details.classList.add('hidden');
                 details.classList.remove('fade-in');
                 transactionInput.removeAttribute('required');
+                teamNameInput.removeAttribute('required');
                 // Clear form fields
                 details.querySelectorAll('input').forEach(input => input.value = '');
             }
@@ -721,37 +751,46 @@
         document.getElementById('projectShowcase').addEventListener('change', function() {
             const details = document.getElementById('projectShowcaseDetails');
             const transactionInput = document.getElementById('projectShowcaseTransaction');
+            const teamNameInput = document.getElementById('projectShowcaseTeamName');
+            const projectTitleInput = document.getElementById('projectTitle');
+            const projectBriefInput = document.getElementById('projectBrief');
             if (this.checked) {
                 details.classList.remove('hidden');
                 details.classList.add('fade-in');
                 transactionInput.setAttribute('required', 'required');
+                teamNameInput.setAttribute('required', 'required');
+                projectTitleInput.setAttribute('required', 'required');
+                projectBriefInput.setAttribute('required', 'required');
             } else {
                 details.classList.add('hidden');
                 details.classList.remove('fade-in');
                 transactionInput.removeAttribute('required');
+                teamNameInput.removeAttribute('required');
+                projectTitleInput.removeAttribute('required');
+                projectBriefInput.removeAttribute('required');
                 // Clear form fields
-                details.querySelectorAll('input').forEach(input => input.value = '');
+                details.querySelectorAll('input, textarea').forEach(input => input.value = '');
             }
         });
 
         // Form submission with enhanced validation
         document.getElementById('registrationForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             // Clear previous error states
             document.querySelectorAll('.validation-error').forEach(el => el.classList.remove('validation-error'));
             document.querySelectorAll('.error').forEach(el => el.textContent = '');
-            
+
             // Show loading state
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
             submitBtn.innerHTML = 'Submitting... <span class="loading"></span>';
-            
+
             // Validate required fields
             const requiredFields = ['name', 'institution', 'mobile', 'email', 'category'];
             let isValid = true;
             let errorMessage = '';
-            
+
             requiredFields.forEach(field => {
                 const input = document.getElementById(field);
                 if (!input.value.trim()) {
@@ -765,7 +804,7 @@
             const olympiadCheckboxes = document.querySelectorAll('input[name="olympiads"]:checked');
             const olympiadError = document.getElementById('olympiadError');
             const olympiadTransactionError = document.getElementById('olympiadTransactionError');
-            
+
             // MANDATORY: At least one olympiad must be selected
             if (olympiadCheckboxes.length === 0) {
                 isValid = false;
@@ -780,13 +819,13 @@
                     olympiadTransactionError.textContent = 'Transaction ID is required for olympiad participation';
                     errorMessage += '• Transaction ID is required for olympiad participation\n';
                 }
-                
+
                 // Update hidden field with selected olympiads
                 const selectedOlympiads = Array.from(olympiadCheckboxes).map(cb => cb.value);
                 document.getElementById('olympiadSelections').value = selectedOlympiads.join(', ');
             }
 
-            // Validate team participation REQUIRED payments
+            // Validate team participation REQUIRED payments and fields
             const wallMagazineChecked = document.getElementById('wallMagazine').checked;
             const projectShowcaseChecked = document.getElementById('projectShowcase').checked;
             const wallMagazineTransactionError = document.getElementById('wallMagazineTransactionError');
@@ -794,21 +833,46 @@
 
             if (wallMagazineChecked) {
                 const transactionInput = document.getElementById('wallMagazineTransaction');
+                const teamNameInput = document.getElementById('wallMagazineTeamName');
                 if (!transactionInput.value.trim()) {
                     isValid = false;
                     transactionInput.classList.add('validation-error');
                     wallMagazineTransactionError.textContent = 'Transaction ID is required for Wall Magazine participation';
                     errorMessage += '• Transaction ID is required for Wall Magazine participation\n';
                 }
+                if (!teamNameInput.value.trim()) {
+                    isValid = false;
+                    teamNameInput.classList.add('validation-error');
+                    errorMessage += '• Team Name is required for Wall Magazine participation\n';
+                }
             }
 
             if (projectShowcaseChecked) {
                 const transactionInput = document.getElementById('projectShowcaseTransaction');
+                const teamNameInput = document.getElementById('projectShowcaseTeamName');
+                const projectTitleInput = document.getElementById('projectTitle');
+                const projectBriefInput = document.getElementById('projectBrief');
+
                 if (!transactionInput.value.trim()) {
                     isValid = false;
                     transactionInput.classList.add('validation-error');
                     projectShowcaseTransactionError.textContent = 'Transaction ID is required for Project Showcase participation';
                     errorMessage += '• Transaction ID is required for Project Showcase participation\n';
+                }
+                if (!teamNameInput.value.trim()) {
+                    isValid = false;
+                    teamNameInput.classList.add('validation-error');
+                    errorMessage += '• Team Name is required for Project Showcase participation\n';
+                }
+                if (!projectTitleInput.value.trim()) {
+                    isValid = false;
+                    projectTitleInput.classList.add('validation-error');
+                    errorMessage += '• Project Title is required for Project Showcase participation\n';
+                }
+                if (!projectBriefInput.value.trim()) {
+                    isValid = false;
+                    projectBriefInput.classList.add('validation-error');
+                    errorMessage += '• Project Brief is required for Project Showcase participation\n';
                 }
             }
 
@@ -816,10 +880,10 @@
                 // Reset button state
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Submit Registration';
-                
+
                 // Show detailed error message
-                alert('❌ SUBMISSION FAILED - Missing Required Information:\n\n' + errorMessage + '\n⚠️ ALL TRANSACTION IDs ARE MANDATORY FOR SELECTED EVENTS!\n\nPlease fill in all required fields and transaction IDs before submitting.');
-                
+                alert('❌ SUBMISSION FAILED - Missing Required Information:\n\n' + errorMessage + '\n⚠️ ALL TRANSACTION IDs AND TEAM INFORMATION ARE MANDATORY FOR SELECTED EVENTS!\n\nPlease fill in all required fields and transaction IDs before submitting.');
+
                 // Scroll to first error
                 const firstError = document.querySelector('.validation-error');
                 if (firstError) {
@@ -831,7 +895,7 @@
 
             // Submit the form
             const formData = new FormData(this);
-            
+
             // Try multiple email services for better delivery
             Promise.all([
                 // Method 1: Formspree
@@ -852,7 +916,11 @@
                         olympiad_selections: formData.get('olympiad_selections'),
                         solo_participation: Array.from(document.querySelectorAll('input[name="solo_participation"]:checked')).map(cb => cb.value).join(', '),
                         team_participation: Array.from(document.querySelectorAll('input[name="team_participation"]:checked')).map(cb => cb.value).join(', '),
+                        wall_magazine_team_name: formData.get('wall_magazine_team_name'),
                         wall_magazine_transaction: formData.get('wall_magazine_transaction_id'),
+                        project_showcase_team_name: formData.get('project_showcase_team_name'),
+                        project_title: formData.get('project_title'),
+                        project_brief: formData.get('project_brief'),
                         project_showcase_transaction: formData.get('project_showcase_transaction_id'),
                         // Add olympiad transaction ID
                         olympiad_transaction: formData.get('olympiad_transaction_id'),
@@ -864,16 +932,16 @@
             .then(responses => {
                 // Check if at least one method succeeded
                 const hasSuccess = responses.some(response => response && response.ok);
-                
+
                 if (hasSuccess) {
                     // Show success message
                     document.getElementById('successMessage').style.display = 'block';
                     document.getElementById('registrationForm').style.display = 'none';
-                    
+
                     // Scroll to success message
-                    document.getElementById('successMessage').scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'center' 
+                    document.getElementById('successMessage').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
                     });
                 } else {
                     throw new Error('All email methods failed');
@@ -881,7 +949,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                
+
                 // Fallback: Create mailto link for manual sending
                 let emailBody = '📝 NEW REGISTRATION - 3rd LMSC Science Fest\n\n';
                 emailBody += `Name: ${formData.get('name')}\n`;
@@ -890,45 +958,49 @@
                 emailBody += `Email: ${formData.get('email')}\n`;
                 emailBody += `Category: ${formData.get('category')}\n`;
                 emailBody += `Olympiads: ${formData.get('olympiad_selections')}\n`;
-                
+
                 // Add transaction ID for olympiad participation
                 if (formData.get('olympiad_transaction_id')) {
                     emailBody += `Olympiad Transaction: ${formData.get('olympiad_transaction_id')}\n`;
                 }
-                
+
                 const soloEvents = Array.from(document.querySelectorAll('input[name="solo_participation"]:checked')).map(cb => cb.value);
                 if (soloEvents.length > 0) {
                     emailBody += `Solo Events: ${soloEvents.join(', ')}\n`;
                 }
-                
+
                 const teamEvents = Array.from(document.querySelectorAll('input[name="team_participation"]:checked')).map(cb => cb.value);
                 if (teamEvents.length > 0) {
                     emailBody += `Team Events: ${teamEvents.join(', ')}\n`;
                     if (formData.get('wall_magazine_transaction_id')) {
+                        emailBody += `Wall Magazine Team: ${formData.get('wall_magazine_team_name')}\n`;
                         emailBody += `Wall Magazine Transaction: ${formData.get('wall_magazine_transaction_id')}\n`;
                         emailBody += `Wall Magazine Members: ${formData.get('wall_magazine_member_1') || ''}, ${formData.get('wall_magazine_member_2') || ''}, ${formData.get('wall_magazine_member_3') || ''}\n`;
                     }
                     if (formData.get('project_showcase_transaction_id')) {
+                        emailBody += `Project Showcase Team: ${formData.get('project_showcase_team_name')}\n`;
+                        emailBody += `Project Title: ${formData.get('project_title')}\n`;
+                        emailBody += `Project Brief: ${formData.get('project_brief')}\n`;
                         emailBody += `Project Showcase Transaction: ${formData.get('project_showcase_transaction_id')}\n`;
                         emailBody += `Project Showcase Members: ${formData.get('project_showcase_member_1') || ''}, ${formData.get('project_showcase_member_2') || ''}, ${formData.get('project_showcase_member_3') || ''}, ${formData.get('project_showcase_member_4') || ''}\n`;
                     }
                 }
-                
+
                 emailBody += `\nSubmitted on: ${new Date().toLocaleString()}`;
-                
+
                 const mailtoLink = `mailto:sahadakhatun1977@gmail.com?subject=${encodeURIComponent('🎓 LMSC Science Fest Registration - ' + formData.get('name'))}&body=${encodeURIComponent(emailBody)}`;
-                
+
                 // Open email client
                 window.open(mailtoLink);
-                
+
                 alert('📧 Your email client will open with the registration details. Please send the email to complete your registration. If no email client opens, please manually send the registration details to sahadakhatun1977@gmail.com');
-                
+
                 // Show success message anyway
                 document.getElementById('successMessage').style.display = 'block';
                 document.getElementById('registrationForm').style.display = 'none';
-                document.getElementById('successMessage').scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'center' 
+                document.getElementById('successMessage').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
                 });
             })
             .finally(() => {
@@ -945,7 +1017,7 @@
         function addRealTimeValidation(inputId, errorId) {
             const input = document.getElementById(inputId);
             const errorDiv = document.getElementById(errorId);
-            
+
             input.addEventListener('input', function() {
                 if (this.value.trim()) {
                     this.classList.remove('validation-error');
