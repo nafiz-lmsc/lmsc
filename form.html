@@ -542,7 +542,7 @@
                         <!-- Payment section for olympiads -->
                         <div id="olympiadPaymentSection" class="hidden" style="margin-top: 30px;">
                             <div class="payment-info">
-                                <strong>💳 Payment Required:</strong> 20 TK via BKash/Nagad to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
+                                <strong>💳 Payment Required:</strong> 20 TK via bKash/Nagad to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
                             </div>
 
                             <div class="form-group">
@@ -578,6 +578,19 @@
                                 <label for="problemSolving">Problem Solving</label>
                             </div>
                         </div>
+
+                        <!-- Chess Lichess ID Section -->
+                        <div id="chessLichessSection" class="hidden" style="margin-top: 30px;">
+                            <div class="payment-info" style="background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.4);">
+                                <strong>♟️ Chess Tournament Requirement:</strong> The online selection round will be held on Lichess. You must provide your Lichess ID.
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lichessId">Lichess ID <span class="required">*</span></label>
+                                <input type="text" id="lichessId" name="lichess_id" placeholder="Enter your Lichess username (REQUIRED FOR CHESS TOURNAMENT)">
+                                <div class="error" id="lichessIdError"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Team Participation -->
@@ -594,7 +607,7 @@
 
                             <div id="wallMagazineDetails" class="hidden">
                                 <div class="payment-info">
-                                    <strong>💳 Payment Required:</strong> 150 TK via Bkash/Nagad to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
+                                    <strong>💳 Payment Required:</strong> 100 TK via Bkash to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
                                 </div>
 
                                 <div class="form-group">
@@ -625,7 +638,7 @@
 
                             <div id="projectShowcaseDetails" class="hidden">
                                 <div class="payment-info">
-                                    <strong>💳 Payment Required:</strong> 300 TK via BKash/Nagad to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
+                                    <strong>💳 Payment Required:</strong> 200 TK via bKash/Nagad to <strong>01759189875</strong> <strong>IF TRANSACTION NOT FOUND, THE REGISTRATION WILL BE CANCELLED! [TAKE A SCREENSHOT OF YOUR PAYMENT]</strong>
                                 </div>
 
                                 <div class="form-group">
@@ -728,6 +741,22 @@
             }
         });
 
+        // Chess Tournament Handler
+        document.getElementById('chess').addEventListener('change', function() {
+            const lichessSection = document.getElementById('chessLichessSection');
+            const lichessInput = document.getElementById('lichessId');
+            if (this.checked) {
+                lichessSection.classList.remove('hidden');
+                lichessSection.classList.add('fade-in');
+                lichessInput.setAttribute('required', 'required');
+            } else {
+                lichessSection.classList.add('hidden');
+                lichessSection.classList.remove('fade-in');
+                lichessInput.removeAttribute('required');
+                lichessInput.value = '';
+            }
+        });
+
         // Team participation handlers
         document.getElementById('wallMagazine').addEventListener('change', function() {
             const details = document.getElementById('wallMagazineDetails');
@@ -825,6 +854,19 @@
                 document.getElementById('olympiadSelections').value = selectedOlympiads.join(', ');
             }
 
+            // Validate Chess Lichess ID
+            const chessChecked = document.getElementById('chess').checked;
+            const lichessIdError = document.getElementById('lichessIdError');
+            if (chessChecked) {
+                const lichessInput = document.getElementById('lichessId');
+                if (!lichessInput.value.trim()) {
+                    isValid = false;
+                    lichessInput.classList.add('validation-error');
+                    lichessIdError.textContent = 'Lichess ID is required for Chess Tournament participation';
+                    errorMessage += '• Lichess ID is required for Chess Tournament participation\n';
+                }
+            }
+
             // Validate team participation REQUIRED payments and fields
             const wallMagazineChecked = document.getElementById('wallMagazine').checked;
             const projectShowcaseChecked = document.getElementById('projectShowcase').checked;
@@ -915,6 +957,7 @@
                         category: formData.get('category'),
                         olympiad_selections: formData.get('olympiad_selections'),
                         solo_participation: Array.from(document.querySelectorAll('input[name="solo_participation"]:checked')).map(cb => cb.value).join(', '),
+                        lichess_id: formData.get('lichess_id'),
                         team_participation: Array.from(document.querySelectorAll('input[name="team_participation"]:checked')).map(cb => cb.value).join(', '),
                         wall_magazine_team_name: formData.get('wall_magazine_team_name'),
                         wall_magazine_transaction: formData.get('wall_magazine_transaction_id'),
@@ -967,6 +1010,9 @@
                 const soloEvents = Array.from(document.querySelectorAll('input[name="solo_participation"]:checked')).map(cb => cb.value);
                 if (soloEvents.length > 0) {
                     emailBody += `Solo Events: ${soloEvents.join(', ')}\n`;
+                    if (formData.get('lichess_id')) {
+                        emailBody += `Lichess ID: ${formData.get('lichess_id')}\n`;
+                    }
                 }
 
                 const teamEvents = Array.from(document.querySelectorAll('input[name="team_participation"]:checked')).map(cb => cb.value);
@@ -1030,6 +1076,7 @@
         addRealTimeValidation('olympiadTransaction', 'olympiadTransactionError');
         addRealTimeValidation('wallMagazineTransaction', 'wallMagazineTransactionError');
         addRealTimeValidation('projectShowcaseTransaction', 'projectShowcaseTransactionError');
+        addRealTimeValidation('lichessId', 'lichessIdError');
     </script>
 </body>
 </html>
